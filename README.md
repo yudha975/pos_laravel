@@ -73,7 +73,30 @@ Aplikasi **Point of Sale (POS)** berbasis web yang dibangun dengan **Laravel 13*
 - Node.js & NPM
 - MySQL / MariaDB
 
-### Langkah Instalasi
+### Instalasi Database (Ubuntu Server)
+
+Jika Anda melakukan instalasi pada server Ubuntu baru, jalankan perintah berikut untuk menginstal dan menyiapkan MySQL:
+
+```bash
+# 1. Update paket & instal MySQL Server
+sudo apt update
+sudo apt install mysql-server -y
+
+# 2. Amankan instalasi MySQL (Ikuti prompt)
+sudo mysql_secure_installation
+
+# 3. Masuk ke MySQL sebagai root
+sudo mysql
+
+# 4. Buat database dan user (jalankan di dalam prompt MySQL)
+CREATE DATABASE pos_db;
+CREATE USER 'pos_user'@'localhost' IDENTIFIED BY 'password_kuat';
+GRANT ALL PRIVILEGES ON pos_db.* TO 'pos_user'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+```
+
+### Langkah Instalasi Aplikasi
 
 ```bash
 # 1. Clone repositori
@@ -92,10 +115,10 @@ cp .env.example .env
 # 5. Generate app key
 php artisan key:generate
 
-# 6. Konfigurasi database di .env
-# DB_DATABASE=nama_database
-# DB_USERNAME=username
-# DB_PASSWORD=password
+# 6. Konfigurasi database di .env (Sesuaikan dengan langkah instalasi DB di atas)
+# DB_DATABASE=pos_db
+# DB_USERNAME=pos_user
+# DB_PASSWORD=password_kuat
 
 # 7. Jalankan migrasi & seeder
 php artisan migrate --seed
