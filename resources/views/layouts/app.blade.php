@@ -12,7 +12,7 @@
 
         <title>{{ $appName }}</title>
         @if($favicon)
-            <link rel="icon" type="image/png" href="{{ $favicon }}">
+            <link rel="icon" type="image/png" href="{{ $favicon }}?v={{ time() }}">
         @endif
 
         <!-- Fonts -->

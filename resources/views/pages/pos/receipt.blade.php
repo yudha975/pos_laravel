@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Struk #{{ $sale->invoice_number }}</title>
+    @if(!empty($settings['company_favicon']))
+        <link rel="icon" type="image/png" href="{{ $settings['company_favicon'] }}">
+    @endif
     <style>
         body {
             font-family: 'Courier New', Courier, monospace;
@@ -40,10 +43,14 @@
 <body onload="window.print()">
     <div class="receipt-container">
         <!-- Header -->
+        <!-- Header -->
         <div class="text-center border-b">
-            <h2 class="font-bold mb-2" style="font-size: 16px; margin-top:0;">TOKO POS LITE</h2>
-            <p style="margin: 0;">Jl. Contoh Alamat No. 123</p>
-            <p style="margin: 0;">Telp: 08123456789</p>
+            @if(!empty($settings['company_logo']))
+                <img src="{{ $settings['company_logo'] }}" alt="Logo" style="max-width: 150px; margin: 0 auto 10px; display: block;">
+            @endif
+            <h2 class="font-bold mb-2" style="font-size: 16px; margin-top:0;">{{ $settings['company_name'] ?? 'TOKO POS LITE' }}</h2>
+            <p style="margin: 0;">{{ $settings['company_address'] ?? 'Alamat belum diatur' }}</p>
+            <p style="margin: 0;">Telp: {{ $settings['company_phone'] ?? '-' }}</p>
         </div>
 
         <!-- Meta -->
@@ -109,9 +116,9 @@
         </div>
 
         <!-- Footer -->
+        <!-- Footer -->
         <div class="text-center mt-4 border-t pt-4">
-            <p style="margin: 0;">Terima kasih atas kunjungan Anda!</p>
-            <p style="margin: 0;">Barang yang sudah dibeli tidak dapat ditukar/dikembalikan.</p>
+            <p style="margin: 0;">{!! nl2br(e($settings['receipt_footer'] ?? "Terima Kasih Telah Berbelanja!")) !!}</p>
         </div>
     </div>
 </body>

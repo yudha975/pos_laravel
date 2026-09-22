@@ -151,6 +151,7 @@ class PosController extends Controller
     public function receipt(Sale $sale)
     {
         $sale->load(['items', 'customer', 'user']);
-        return view('pages.pos.receipt', compact('sale'));
+        $settings = \App\Models\Setting::pluck('value', 'key')->toArray();
+        return view('pages.pos.receipt', compact('sale', 'settings'));
     }
 }
