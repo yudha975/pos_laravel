@@ -16,19 +16,16 @@ class RoleSeeder extends Seeder
         $admin = Role::firstOrCreate(['name' => 'admin_cabang']);
         $kasir = Role::firstOrCreate(['name' => 'kasir']);
 
-        // 2. Beri role superadmin ke User dengan ID 1 (User default test)
-        $user = User::find(1);
-        if ($user) {
-            $user->assignRole('superadmin');
-        } else {
-            $user = User::create([
+        // 2. Buat User Superadmin
+        $adminUser = User::firstOrCreate(
+            ['email' => 'admin@admin.com'],
+            [
                 'name' => 'Superadmin',
-                'email' => 'admin@admin.com',
                 'password' => bcrypt('password'),
                 'branch_id' => 1
-            ]);
-            $user->assignRole('superadmin');
-        }
+            ]
+        );
+        $adminUser->assignRole('superadmin');
 
         // 3. Buat User Kasir dummy untuk cabang 1
         $kasirUser = User::firstOrCreate(

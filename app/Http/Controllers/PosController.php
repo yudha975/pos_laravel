@@ -20,9 +20,15 @@ class PosController extends Controller
         $categories = Category::where('is_active', true)->get();
         $customers = Customer::all();
         // Load products with basic info for the POS grid
+        $branchId = auth()->check() ? (auth()->user()->branch_id ?? 1) : 1;
         $products = Product::where('is_active', true)
-                           ->where('stock', '>', 0)
-                           ->get(['id', 'name', 'sku', 'barcode', 'category_id', 'retail_price', 'reseller_price', 'technician_price', 'wholesale_price', 'stock']);
+                           ->whereHas('branches', function($q) use ($branchId) {
+                               $q->where('branch_id', $branchId)->where('stock', '>', 0);
+                           })
+                           ->with(['branches' => function($q) use ($branchId) {
+                               $q->where('branch_id', $branchId);
+                           }])
+                           ->get(['id', 'name', 'sku', 'barcode', 'category_id', 'retail_price', 'reseller_price', 'technician_price', 'wholesale_price']);
 
         return view('pages.pos.index', compact('categories', 'customers', 'products'));
     }
